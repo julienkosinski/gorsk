@@ -21,7 +21,7 @@ type AccountDB struct {
 // Create creates a new user on database
 func (a *AccountDB) Create(db orm.DB, usr model.User) (*model.User, error) {
 	var user = new(model.User)
-	res, err := db.Query(user, "select id from users where username = ? or email = ? and deleted_at is null", usr.Username, usr.Email)
+	res, err := db.Query(user, "SELECT id FROM user WHERE username = ? OR email = ? AND deleted_at IS NULL", usr.Username, usr.Email)
 	if err != nil {
 		a.log.Error("AccountDB Error: %v", err)
 		return nil, err

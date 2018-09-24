@@ -13,14 +13,21 @@ import (
 	"github.com/ribice/gorsk/internal/auth"
 )
 
+// Keeps using singular table names
+func init() {
+	orm.SetTableNameInflector(func(s string) string {
+		return s
+	})
+}
+
 func main() {
-	dbInsert := `INSERT INTO public.companies VALUES (1, now(), now(), NULL, 'admin_company', true);
-	INSERT INTO public.locations VALUES (1, now(), now(), NULL, 'admin_location', true, 'admin_address', 1);
-	INSERT INTO public.roles VALUES (1, 1, 'SUPER_ADMIN');
-	INSERT INTO public.roles VALUES (2, 2, 'ADMIN');
-	INSERT INTO public.roles VALUES (3, 3, 'COMPANY_ADMIN');
-	INSERT INTO public.roles VALUES (4, 4, 'LOCATION_ADMIN');
-	INSERT INTO public.roles VALUES (5, 5, 'USER');`
+	dbInsert := `INSERT INTO public.company VALUES (1, now(), now(), NULL, 'admin_company', true);
+	INSERT INTO public.location VALUES (1, now(), now(), NULL, 'admin_location', true, 'admin_address', 1);
+	INSERT INTO public.role VALUES (1, 1, 'SUPER_ADMIN');
+	INSERT INTO public.role VALUES (2, 2, 'ADMIN');
+	INSERT INTO public.role VALUES (3, 3, 'COMPANY_ADMIN');
+	INSERT INTO public.role VALUES (4, 4, 'LOCATION_ADMIN');
+	INSERT INTO public.role VALUES (5, 5, 'USER');`
 	var psn = ``
 	queries := strings.Split(dbInsert, ";")
 
@@ -35,7 +42,7 @@ func main() {
 		_, err := db.Exec(v)
 		checkErr(err)
 	}
-	userInsert := `INSERT INTO public.users VALUES (1, now(),now(), NULL, 'Admin', 'Admin', 'admin', '%s', 'johndoe@mail.com', NULL, NULL, NULL, NULL, true, 1, 1, 1);`
+	userInsert := `INSERT INTO public.user VALUES (1, now(),now(), NULL, 'Admin', 'Admin', 'admin', '%s', 'johndoe@mail.com', NULL, NULL, NULL, NULL, true, 1, 1, 1);`
 	_, err = db.Exec(fmt.Sprintf(userInsert, auth.HashPassword("admin")))
 	checkErr(err)
 }

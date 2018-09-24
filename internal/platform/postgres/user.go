@@ -20,7 +20,7 @@ type UserDB struct {
 func (u *UserDB) View(db orm.DB, id int) (*model.User, error) {
 	var user = new(model.User)
 	sql := `SELECT "user".*, "role"."id" AS "role__id", "role"."access_level" AS "role__access_level", "role"."name" AS "role__name"
-	FROM "users" AS "user" LEFT JOIN "roles" AS "role" ON "role"."id" = "user"."role_id"
+	FROM "user" LEFT JOIN "role" ON "role"."id" = "user"."role_id"
 	WHERE ("user"."id" = ? and deleted_at is null)`
 	_, err := db.QueryOne(user, sql, id)
 	if err != nil {
@@ -33,7 +33,7 @@ func (u *UserDB) View(db orm.DB, id int) (*model.User, error) {
 func (u *UserDB) FindByUsername(db orm.DB, uname string) (*model.User, error) {
 	var user = new(model.User)
 	sql := `SELECT "user".*, "role"."id" AS "role__id", "role"."access_level" AS "role__access_level", "role"."name" AS "role__name"
-	FROM "users" AS "user" LEFT JOIN "roles" AS "role" ON "role"."id" = "user"."role_id"
+	FROM "user" LEFT JOIN "role" ON "role"."id" = "user"."role_id"
 	WHERE ("user"."username" = ? and deleted_at is null)`
 	_, err := db.QueryOne(user, sql, uname)
 	if err != nil {
@@ -46,7 +46,7 @@ func (u *UserDB) FindByUsername(db orm.DB, uname string) (*model.User, error) {
 func (u *UserDB) FindByToken(db orm.DB, token string) (*model.User, error) {
 	var user = new(model.User)
 	sql := `SELECT "user".*, "role"."id" AS "role__id", "role"."access_level" AS "role__access_level", "role"."name" AS "role__name"
-	FROM "users" AS "user" LEFT JOIN "roles" AS "role" ON "role"."id" = "user"."role_id"
+	FROM "user" LEFT JOIN "role" ON "role"."id" = "user"."role_id"
 	WHERE ("user"."token" = ? and deleted_at is null)`
 	_, err := db.QueryOne(user, sql, token)
 	if err != nil {
